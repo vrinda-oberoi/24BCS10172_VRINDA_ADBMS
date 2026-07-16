@@ -1,0 +1,9 @@
+SELECT *
+FROM (
+    SELECT customer_id,
+           SUM(purchase_value) AS total_purchase_value,
+           DENSE_RANK() OVER (ORDER BY SUM(purchase_value) DESC) AS rank
+    FROM customer_purchase
+    GROUP BY customer_id
+) t
+WHERE rank <= 5;
