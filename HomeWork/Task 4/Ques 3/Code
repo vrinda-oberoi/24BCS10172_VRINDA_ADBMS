@@ -1,0 +1,21 @@
+SELECT
+    e.department,
+    e.id,
+    e.salary,
+    m.salary AS manager_salary,
+    ROUND(AVG(CASE
+                WHEN e2.id <> e2.manager_id THEN e2.salary
+              END), 0) AS avg_department_salary
+FROM employee_o e
+JOIN employee_o m
+ON e.manager_id = m.id
+JOIN employee_o e2
+ON e.department = e2.department
+GROUP BY
+    e.department,
+    e.id,
+    e.salary,
+    m.salary
+ORDER BY
+    e.department,
+    e.salary DESC;
