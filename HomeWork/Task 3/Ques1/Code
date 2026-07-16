@@ -1,0 +1,3 @@
+
+delete from Customers where customer_name ='John Doe';
+select * from Orders; 
