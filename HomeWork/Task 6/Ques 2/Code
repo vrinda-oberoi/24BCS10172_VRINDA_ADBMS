@@ -1,0 +1,29 @@
+WITH cte AS (
+    SELECT
+        contact_id,
+        DATE_TRUNC('week', event_date) AS week_start,
+        ROW_NUMBER() OVER (
+            PARTITION BY contact_id
+            ORDER BY DATE_TRUNC('week', event_date)
+        ) AS rn
+    FROM marketing_touches
+    GROUP BY contact_id, DATE_TRUNC('week', event_date)
+),
+streak AS (
+    SELECT
+        contact_id,
+        week_start - (rn * INTERVAL '1 week') AS grp
+    FROM cte
+)
+SELECT c.email
+FROM crm_contacts c
+JOIN streak s
+ON c.contact_id = s.contact_id
+WHERE c.contact_id IN (
+    SELECT contact_id
+    FROM marketing_touches
+    WHERE event_type = 'trial_request'
+)
+GROUP BY c.email, s.contact_id, s.grp
+HAVING COUNT(*) >= 3
+ORDER BY c.email;
