@@ -1,0 +1,18 @@
+SELECT
+    p.product_family,
+    COALESCE(SUM(s.units_sold), 0) AS total_units_sold,
+    COALESCE(
+        100.0 * SUM(
+            CASE
+                WHEN sp.promotion_id IS NOT NULL THEN s.units_sold
+                ELSE 0
+            END
+        ) / SUM(s.units_sold),
+        0
+    ) AS percentage_units_sold_with_promo
+FROM facebook_products p
+LEFT JOIN facebook_sales s
+    ON p.product_id = s.product_id
+LEFT JOIN facebook_sales_promotions sp
+    ON s.promotion_id = sp.promotion_id
+GROUP BY p.product_family;
