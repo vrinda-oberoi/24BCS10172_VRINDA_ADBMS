@@ -1,1 +1,3 @@
-
+Select * from employee
+UNION ALL
+Select * from pt_employee;
