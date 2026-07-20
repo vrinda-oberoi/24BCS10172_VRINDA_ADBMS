@@ -1,0 +1,3 @@
+select * from Arts 
+Union 
+select * from Science;
