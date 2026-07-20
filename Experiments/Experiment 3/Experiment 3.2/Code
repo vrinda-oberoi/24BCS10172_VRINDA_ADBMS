@@ -1,0 +1,4 @@
+//count no of students in cities
+Select city,Count(*) AS cnt
+FROM student
+GROUP BY city;
