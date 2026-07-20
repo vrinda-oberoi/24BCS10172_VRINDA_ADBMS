@@ -1,0 +1,3 @@
+Select f_name from fruit
+INTERSECT
+Select inv_name from inventory;
