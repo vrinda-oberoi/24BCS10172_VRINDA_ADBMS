@@ -1,0 +1,8 @@
+Select * from student
+JOIN course
+on student.Course_id = course.Course_id;
+
+
+ Select * from student
+ LEFT JOIN course
+ ON student.Course_id = course.Course_id;
